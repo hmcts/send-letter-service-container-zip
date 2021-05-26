@@ -1,2 +1,2 @@
 # send-letter-service-container-zip
-Code to zip files in the ‘processed container’ and move them to the ‘zipped’ container
+code to PGP encrypt files in the ‘zipped’ container and move them to the ‘encrypted’ folder

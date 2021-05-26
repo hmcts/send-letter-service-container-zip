@@ -18,5 +18,5 @@ function:
     enabled: true
   triggers:
     - type: azure-blob
-      blobContainerName: "processed"
+      blobContainerName: "zipped"
       accountName: "rpesendletter{{ .Values.global.environment }}"

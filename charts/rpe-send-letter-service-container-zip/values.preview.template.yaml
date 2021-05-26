@@ -3,5 +3,5 @@ function:
   image: ${IMAGE_NAME}
   triggers:
     - type: azure-blob
-      blobContainerName: "processed"
+      blobContainerName: "zipped"
       accountName: "rpesendletterpreview"
