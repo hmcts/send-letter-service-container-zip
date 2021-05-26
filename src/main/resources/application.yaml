@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Send Letter Service Container New
+    name: Send Letter Service Container Zip
   config:
     import: "optional:configtree:/mnt/secrets/rpe-send-letter/"
   jackson:
