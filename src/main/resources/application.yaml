@@ -7,11 +7,17 @@ spring:
     serialization.write_dates_as_timestamps: false
 
 storage:
-  connection: ${STORAGE_ACCOUNT_CONNECTION_STRING}
+  connection: ${STORAGE_ACCOUNT_CONNECTION_STRING:DefaultEndpointsProtocol=https;AccountName=rpesendletterdemo;AccountKey=TGzwHqSDu/YrMRHxoKeSzSPGzUw2WcwAgQlJPblkke5LiiCkqER1iQP6j3FmnAv584cikJQ1QUJwsO8PaAfDyg==;EndpointSuffix=core.windows.net}
   leaseTime: ${BLOB_LEASE_TIME:20} #In seconds
 
 accesstoken:
   serviceConfig:
     - containerName: zipped
+      containerType: source
+      validity: ${SAS_TOKEN_VALIDITY:300} #In seconds
+    - containerName: encrypted
+      containerType: destination
       validity: ${SAS_TOKEN_VALIDITY:300} #In seconds
 
+encryption:
+  publicKey: ${ENCRYPTION_PUBLIC_KEY:}

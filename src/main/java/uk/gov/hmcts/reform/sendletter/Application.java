@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import uk.gov.hmcts.reform.sendletter.blob.BlobProcessor;
 
 @SuppressWarnings("HideUtilityClassConstructor")
 @SpringBootApplication
+@ConfigurationPropertiesScan
 public class Application implements CommandLineRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
@@ -23,10 +25,11 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
-            LOGGER.info("send letter new KEDA container invoked");
+            LOGGER.info("send letter zipped KEDA container invoked");
             retrieve.read();
+            LOGGER.info("send letter zipped KEDA container finished processing");
         } catch (Exception e) {
-            LOGGER.info("Exception occured while KEDA container invoked", e);
+            LOGGER.info("Exception occurred while zipped KEDA container invoked", e);
         }
     }
 }
