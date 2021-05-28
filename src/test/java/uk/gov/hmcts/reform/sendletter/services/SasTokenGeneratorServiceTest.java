@@ -49,7 +49,7 @@ class SasTokenGeneratorServiceTest {
 
     @Test
     void should_return_sas_token_when_service_is_configured() {
-        String token = sasTokenGeneratorService.generateSasToken("sscs");
+        String token = sasTokenGeneratorService.generateSasToken("zipped");
         Map<String, String> tokenData = Arrays.stream(token.split("&"))
                 .map(data -> {
                     String[] split = data.split("=");
@@ -61,14 +61,14 @@ class SasTokenGeneratorServiceTest {
         assertThat(tokenData.get("sig")).isNotNull();//this is a generated hash of the resource string
         assertThat(tokenData.get("se")).startsWith(LocalDate.now().toString());//the expiry date/time for the signature
         assertThat(tokenData.get("sv")).contains("2020-04-08");//azure api version is latest
-        assertThat(tokenData.get("sp")).contains("rwl");//access permissions(write-w,list-l)
+        assertThat(tokenData.get("sp")).contains("rwdl");//access permissions(write-w,list-l)
         assertThat(tokenData.get("sr")).isNotNull();
     }
 
     @Test
     void should_throw_unable_to_generate_sas_token_exception_when_unable_to_create_sas_token() {
         BlobServiceClient blobServiceClient = mock(BlobServiceClient.class);
-        given(blobServiceClient.getBlobContainerClient("new-sscs"))
+        given(blobServiceClient.getBlobContainerClient("zipped"))
                 .willThrow(new RuntimeException("Invalid service"));
 
         sasTokenGeneratorService = new SasTokenGeneratorService(
@@ -77,7 +77,7 @@ class SasTokenGeneratorServiceTest {
         );
 
         assertThatThrownBy(() ->
-                sasTokenGeneratorService.generateSasToken("sscs")
+                sasTokenGeneratorService.generateSasToken("zipped")
         ).isInstanceOf(UnableToGenerateSasTokenException.class)
                 .hasMessage("java.lang.RuntimeException: Invalid service");
 
@@ -88,7 +88,7 @@ class SasTokenGeneratorServiceTest {
         assertThatThrownBy(() ->
                 sasTokenGeneratorService.generateSasToken("unkown")
         ).isInstanceOf(ServiceConfigNotFoundException.class)
-                .hasMessage("No configuration found for service unkown");
+                .hasMessage("No service configuration found for container unkown");
 
     }
 
