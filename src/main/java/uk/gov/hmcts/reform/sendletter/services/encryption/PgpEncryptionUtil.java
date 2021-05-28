@@ -149,7 +149,7 @@ public final class PgpEncryptionUtil {
         byte[] inputFile,
         String fileName
     ) throws IOException {
-        Path tempDir = createTempDirectory("");
+        Path tempDir = createTempDirectory("temp");
         var tempFile = new File(tempDir.toFile(), fileName);
 
         try (var fos = new FileOutputStream(tempFile)) {
