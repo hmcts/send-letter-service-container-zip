@@ -148,8 +148,8 @@ public final class PgpEncryptionUtil {
             byte[] inputFile,
             String fileName
     ) throws IOException {
-        File tempFile = new File(Files.createTempDir(), fileName);
-        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+        var tempFile = new File(Files.createTempDir(), fileName);
+        try (var fos = new FileOutputStream(tempFile)) {
             fos.write(inputFile);
             return tempFile;
         }
