@@ -13,6 +13,8 @@ import uk.gov.hmcts.reform.sendletter.model.EncryptedInfo;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static com.google.common.io.Resources.getResource;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,13 +52,21 @@ class BlobEncryptionTest {
         EncryptedInfo process = blobEncryption.process(blobClient);
         assertThat(process.getFileName())
                 .isNotEqualTo("BULKPRINT001_sendlettertests_27052021124153_ddcea411-42a8-4134-bad8-e9b5bee84d24.pgp");
+
+        String[] encryptedFile = process.getFileName().split("_");
+        assertThat(LocalDateTime.parse(
+                encryptedFile[2],
+                BlobEncryption.dateTimeFormatter)
+                .toLocalDate())
+                .isEqualTo(LocalDate.now());
+
         assertThat(process.getFileName())
                 .matches("BULKPRINT001_sendlettertests_\\d{14}_ddcea411-42a8-4134-bad8-e9b5bee84d24.pgp");
         assertThat(process.getData()).isNotNull();
     }
 
     @Test
-    void should_encrypted_exception_when_blob_input_strem_is_invaid() throws IOException {
+    void should_encrypted_exception_when_blob_input_strem_is_invaid() {
         given(blobClient.openInputStream())
                 .willThrow(new RuntimeException("Invalid data"));
         assertThatThrownBy(() -> blobEncryption.process(blobClient))
