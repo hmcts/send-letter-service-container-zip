@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.sendletter.blob.component;
 
-import com.azure.storage.blob.specialized.BlobLeaseClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +55,7 @@ public class BlobReader {
 
     private void acquireLease(BlobInfo blobInfo) {
         try {
-            BlobLeaseClient blobLeaseClient = leaseClientProvider.get(blobInfo.getBlobClient());
+            var blobLeaseClient = leaseClientProvider.get(blobInfo.getBlobClient());
             String leaseId = blobLeaseClient.acquireLease(leaseTime);
             blobInfo.setLeaseId(Optional.of(leaseId));
         } catch (Exception e) {

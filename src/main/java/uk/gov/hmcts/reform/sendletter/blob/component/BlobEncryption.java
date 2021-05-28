@@ -49,7 +49,7 @@ public class BlobEncryption {
     private String getEncryptedFileName(String zipFileName) {
         String fileName = zipFileName.replace(".zip", ".pgp");
         String[] fileSplit = fileName.split("_");
-        LocalDateTime now = LocalDateTime.now();
+        var now = LocalDateTime.now();
         return String.join("_",
                 fileSplit[0],
                 fileSplit[1],

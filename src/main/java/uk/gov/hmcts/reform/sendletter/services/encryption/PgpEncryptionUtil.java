@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Iterator;
@@ -56,7 +55,7 @@ public final class PgpEncryptionUtil {
         try {
             Security.addProvider(new BouncyCastleProvider());
 
-            ByteArrayOutputStream byteArrayOutputStream =
+            var byteArrayOutputStream =
                 compressAndWriteFileToLiteralData(
                     inputFile,
                     inputFileName
@@ -66,7 +65,6 @@ public final class PgpEncryptionUtil {
 
             return writeEncryptedDataToOutputStream(byteArrayOutputStream, encryptedDataGenerator);
         } catch (IOException | PGPException exc) {
-            log.error("Error encrypting file {}", inputFileName, exc);
             throw new UnableToPgpEncryptZipFileException(exc);
         }
     }
@@ -82,7 +80,6 @@ public final class PgpEncryptionUtil {
                 )
             ).orElseThrow(() -> new UnableToLoadPgpPublicKeyException(null));
         } catch (IOException e) {
-            log.error("Error loading public key", e);
             throw new UnableToLoadPgpPublicKeyException(e);
         }
     }
@@ -110,8 +107,8 @@ public final class PgpEncryptionUtil {
     ) throws IOException, PGPException {
         byte[] bytes = bout.toByteArray();
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (OutputStream outputStream = encryptedDataGenerator.open(byteArrayOutputStream, bytes.length)) {
+        var byteArrayOutputStream = new ByteArrayOutputStream();
+        try (var outputStream = encryptedDataGenerator.open(byteArrayOutputStream, bytes.length)) {
             outputStream.write(bytes);
         }
 
@@ -119,11 +116,11 @@ public final class PgpEncryptionUtil {
     }
 
     private static PGPEncryptedDataGenerator prepareDataEncryptor(PGPPublicKey pgpPublicKey) {
-        BcPGPDataEncryptorBuilder dataEncryptor = new BcPGPDataEncryptorBuilder(PGPEncryptedData.AES_256);
+        var dataEncryptor = new BcPGPDataEncryptorBuilder(PGPEncryptedData.AES_256);
         dataEncryptor.setWithIntegrityPacket(true);
         dataEncryptor.setSecureRandom(new SecureRandom());
 
-        PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(dataEncryptor);
+        var encryptedDataGenerator = new PGPEncryptedDataGenerator(dataEncryptor);
         encryptedDataGenerator.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(pgpPublicKey));
         return encryptedDataGenerator;
     }
@@ -132,15 +129,15 @@ public final class PgpEncryptionUtil {
         byte[] inputFile,
         String fileName
     ) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        var byteArrayOutputStream = new ByteArrayOutputStream();
 
-        PGPCompressedDataGenerator pgpCompressedDataGenerator =
+        var pgpCompressedDataGenerator =
             new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
 
         //Creates an empty file in the default temporary-file directory
-        File tempFile = createTempFile(inputFile, fileName);
+        var tempFile = createTempFile(inputFile, fileName);
 
-        try (OutputStream out = pgpCompressedDataGenerator.open(byteArrayOutputStream)) {
+        try (var out = pgpCompressedDataGenerator.open(byteArrayOutputStream)) {
             PGPUtil.writeFileToLiteralData(
                 out,
                 PGPLiteralData.BINARY,
@@ -155,8 +152,8 @@ public final class PgpEncryptionUtil {
         byte[] inputFile,
         String fileName
     ) throws IOException {
-        File tempFile = new File(Files.createTempDir(), fileName);
-        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+        var tempFile = new File(Files.createTempDir(), fileName);
+        try (var fos = new FileOutputStream(tempFile)) {
             fos.write(inputFile);
             return tempFile;
         }

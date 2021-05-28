@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.sendletter.blob.component;
 
-import com.azure.storage.blob.BlobClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -34,7 +33,7 @@ public class BlobUpload {
                 destinationContainer);
         String sasToken = sasTokenGeneratorService.generateSasToken(destinationContainer);
         String fileName = encryptedInfo.getFileName();
-        BlobClient blobClient = blobManager.getBlobClient(
+        var blobClient = blobManager.getBlobClient(
                 destinationContainer,
                 sasToken,
                 fileName
