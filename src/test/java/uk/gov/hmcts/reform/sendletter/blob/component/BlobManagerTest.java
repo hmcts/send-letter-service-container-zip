@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.sendletter.blob.component;
 
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -61,6 +62,24 @@ class BlobManagerTest {
         assertThat(actualContainer).isSameAs(expectedContainer);
         verify(blobServiceClient).getBlobContainerClient(containerName);
     }
+
+    @Test
+    void should_return_blob_client_when_parameters_are_valid() {
+        given(blobManager.getAccountUrl()).willReturn("http://test.account");
+        BlobClient blobClient = blobManager.getBlobClient(
+                "zipped",
+                sasToken,
+                "testBLob");
+        assertThat(blobClient).isNotNull();
+    }
+
+    @Test
+    void retrieves_account_url() {
+        given(blobManager.getAccountUrl()).willReturn("http://test.account");
+        String accountUrl = blobManager.getAccountUrl();
+        assertThat(accountUrl).isSameAs("http://test.account");
+    }
+
 
     private void createAccessTokenConfig() {
         BiFunction<String, String, AccessTokenProperties.TokenConfig> tokenFunction = (type, container) -> {

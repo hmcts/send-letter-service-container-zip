@@ -31,7 +31,7 @@ public class BlobManager {
                 .buildClient();
     }
 
-    private String getAccountUrl() {
+    public String getAccountUrl() {
         return blobServiceClient.getAccountUrl();
     }
 }
