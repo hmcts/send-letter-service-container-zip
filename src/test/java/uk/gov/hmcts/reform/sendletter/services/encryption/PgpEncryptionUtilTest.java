@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 import static com.google.common.io.Resources.getResource;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PgpEncryptionUtilTest {
 
@@ -41,6 +42,25 @@ class PgpEncryptionUtilTest {
         //then
         assertThat(inputZipFile).containsExactly(decryptedZip.content);
         assertThat(decryptedZip.filename).isEqualTo(inputFileName);
+    }
+
+
+    @Test
+    void should_unable_to_pgp_encrypt_when_input_byte_is_null()
+            throws Exception {
+        //Given
+        String inputFileName = "unencrypted.zip";
+
+        byte[] inputZipFile = null;
+
+        PGPPublicKey pgpPublicKey = PgpEncryptionUtil.loadPublicKey(loadPublicKey());
+
+       assertThatThrownBy(() -> PgpEncryptionUtil.encryptFile(
+                inputZipFile,
+                inputFileName,
+                pgpPublicKey))
+               .isInstanceOf(UnableToPgpEncryptZipFileException.class)
+               .hasMessage("java.lang.NullPointerException");
     }
 
     @Test

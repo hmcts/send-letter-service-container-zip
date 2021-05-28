@@ -61,7 +61,7 @@ public final class PgpEncryptionUtil {
             PGPEncryptedDataGenerator encryptedDataGenerator = prepareDataEncryptor(pgpPublicKey);
 
             return writeEncryptedDataToOutputStream(byteArrayOutputStream, encryptedDataGenerator);
-        } catch (IOException | PGPException exc) {
+        } catch (Exception exc) {
             throw new UnableToPgpEncryptZipFileException(exc);
         }
     }
