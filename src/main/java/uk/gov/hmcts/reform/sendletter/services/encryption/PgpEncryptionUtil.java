@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.sendletter.services.encryption;
 
+import com.google.common.io.Files;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
 import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
@@ -22,7 +23,6 @@ import java.security.Security;
 import java.util.Iterator;
 import java.util.Optional;
 
-import static java.nio.file.Files.createTempDirectory;
 import static org.bouncycastle.bcpg.CompressionAlgorithmTags.ZIP;
 import static org.bouncycastle.openpgp.PGPEncryptedData.AES_256;
 import static org.bouncycastle.openpgp.PGPUtil.getDecoderStream;
@@ -145,13 +145,11 @@ public final class PgpEncryptionUtil {
     }
 
     private static File createTempFile(
-        byte[] inputFile,
-        String fileName
+            byte[] inputFile,
+            String fileName
     ) throws IOException {
-        var tempDir = createTempDirectory("");
-        var tempFile = new File(tempDir.toFile(), fileName);
-
-        try (var fos = new FileOutputStream(tempFile)) {
+        File tempFile = new File(Files.createTempDir(), fileName);
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
             fos.write(inputFile);
             return tempFile;
         }
