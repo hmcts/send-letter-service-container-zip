@@ -55,7 +55,7 @@ class PgpEncryptionUtilTest {
 
         PGPPublicKey pgpPublicKey = PgpEncryptionUtil.loadPublicKey(loadPublicKey());
 
-       assertThatThrownBy(() -> PgpEncryptionUtil.encryptFile(
+        assertThatThrownBy(() -> PgpEncryptionUtil.encryptFile(
                 inputZipFile,
                 inputFileName,
                 pgpPublicKey))
