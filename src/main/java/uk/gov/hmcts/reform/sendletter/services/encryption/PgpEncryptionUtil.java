@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.security.Security;
@@ -149,7 +150,7 @@ public final class PgpEncryptionUtil {
         byte[] inputFile,
         String fileName
     ) throws IOException {
-        Path tempDir = createTempDirectory("temp");
+        Path tempDir = Files.createTempDirectory("");
         var tempFile = new File(tempDir.toFile(), fileName);
 
         try (var fos = new FileOutputStream(tempFile)) {
