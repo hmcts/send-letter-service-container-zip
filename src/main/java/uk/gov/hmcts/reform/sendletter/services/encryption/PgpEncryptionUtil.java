@@ -1,10 +1,7 @@
 package uk.gov.hmcts.reform.sendletter.services.encryption;
 
-import com.google.common.io.Files;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openpgp.PGPCompressedData;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
-import org.bouncycastle.openpgp.PGPEncryptedData;
 import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
 import org.bouncycastle.openpgp.PGPException;
 import org.bouncycastle.openpgp.PGPLiteralData;
@@ -14,24 +11,24 @@ import org.bouncycastle.openpgp.PGPUtil;
 import org.bouncycastle.openpgp.bc.BcPGPPublicKeyRing;
 import org.bouncycastle.openpgp.operator.bc.BcPGPDataEncryptorBuilder;
 import org.bouncycastle.openpgp.operator.bc.BcPublicKeyKeyEncryptionMethodGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Iterator;
 import java.util.Optional;
 
+import static java.nio.file.Files.createTempDirectory;
+import static org.bouncycastle.bcpg.CompressionAlgorithmTags.ZIP;
+import static org.bouncycastle.openpgp.PGPEncryptedData.AES_256;
 import static org.bouncycastle.openpgp.PGPUtil.getDecoderStream;
 
 public final class PgpEncryptionUtil {
-
-    private static final Logger log = LoggerFactory.getLogger(PgpEncryptionUtil.class);
 
     // Prevent instantiation.
     private PgpEncryptionUtil() {
@@ -116,7 +113,7 @@ public final class PgpEncryptionUtil {
     }
 
     private static PGPEncryptedDataGenerator prepareDataEncryptor(PGPPublicKey pgpPublicKey) {
-        var dataEncryptor = new BcPGPDataEncryptorBuilder(PGPEncryptedData.AES_256);
+        var dataEncryptor = new BcPGPDataEncryptorBuilder(AES_256);
         dataEncryptor.setWithIntegrityPacket(true);
         dataEncryptor.setSecureRandom(new SecureRandom());
 
@@ -132,7 +129,7 @@ public final class PgpEncryptionUtil {
         var byteArrayOutputStream = new ByteArrayOutputStream();
 
         var pgpCompressedDataGenerator =
-            new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
+            new PGPCompressedDataGenerator(ZIP);
 
         //Creates an empty file in the default temporary-file directory
         var tempFile = createTempFile(inputFile, fileName);
@@ -152,7 +149,9 @@ public final class PgpEncryptionUtil {
         byte[] inputFile,
         String fileName
     ) throws IOException {
-        var tempFile = new File(Files.createTempDir(), fileName);
+        Path tempDir = createTempDirectory("");
+        var tempFile = new File(tempDir.toFile(), fileName);
+
         try (var fos = new FileOutputStream(tempFile)) {
             fos.write(inputFile);
             return tempFile;
