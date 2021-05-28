@@ -25,7 +25,7 @@ public class BlobInfo {
         return leaseId.isPresent();
     }
 
-    public void setLeaseId(Optional<String> leaseId) {
-        this.leaseId = leaseId;
+    public void setLeaseId(String leaseId) {
+        this.leaseId = Optional.ofNullable(leaseId);
     }
 }

@@ -57,7 +57,7 @@ public class BlobReader {
         try {
             var blobLeaseClient = leaseClientProvider.get(blobInfo.getBlobClient());
             String leaseId = blobLeaseClient.acquireLease(leaseTime);
-            blobInfo.setLeaseId(Optional.of(leaseId));
+            blobInfo.setLeaseId(leaseId);
         } catch (Exception e) {
             LOG.error("Unable to acquire lease for blob {}",
                     blobInfo.getBlobClient().getBlobName(),

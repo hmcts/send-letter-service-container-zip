@@ -55,7 +55,7 @@ class BlobProcessorTest {
                 "Encrypted Data".getBytes(StandardCharsets.UTF_8));
 
         BlobInfo blobInfo = new BlobInfo(blobClient);
-        blobInfo.setLeaseId(Optional.of("LEASE_ID"));
+        blobInfo.setLeaseId("LEASE_ID");
         given(blobReader.retrieveBlobToProcess()).willReturn(Optional.of(blobInfo));
         given(blobEncryption.process(blobClient)).willReturn(encryptedInfo);
 
