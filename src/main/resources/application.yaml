@@ -7,7 +7,7 @@ spring:
     serialization.write_dates_as_timestamps: false
 
 storage:
-  connection: ${STORAGE_ACCOUNT_CONNECTION_STRING:DefaultEndpointsProtocol=https;AccountName=rpesendletterdemo;AccountKey=TGzwHqSDu/YrMRHxoKeSzSPGzUw2WcwAgQlJPblkke5LiiCkqER1iQP6j3FmnAv584cikJQ1QUJwsO8PaAfDyg==;EndpointSuffix=core.windows.net}
+  connection: ${STORAGE_ACCOUNT_CONNECTION_STRING}
   leaseTime: ${BLOB_LEASE_TIME:20} #In seconds
 
 accesstoken:
