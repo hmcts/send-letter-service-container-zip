@@ -11,12 +11,14 @@ import uk.gov.hmcts.reform.sendletter.config.AccessTokenProperties;
 import uk.gov.hmcts.reform.sendletter.exceptions.ServiceConfigNotFoundException;
 import uk.gov.hmcts.reform.sendletter.exceptions.UnableToGenerateSasTokenException;
 
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import static java.time.ZoneOffset.UTC;
 import static java.util.List.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -50,6 +52,7 @@ class SasTokenGeneratorServiceTest {
     @Test
     void should_return_sas_token_when_service_is_configured() {
         String token = sasTokenGeneratorService.generateSasToken("zipped");
+        String currentDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(OffsetDateTime.now(UTC));
         Map<String, String> tokenData = Arrays.stream(token.split("&"))
                 .map(data -> {
                     String[] split = data.split("=");
@@ -59,7 +62,7 @@ class SasTokenGeneratorServiceTest {
                         Map.Entry::getValue));
 
         assertThat(tokenData.get("sig")).isNotNull();//this is a generated hash of the resource string
-        assertThat(tokenData.get("se")).startsWith(LocalDate.now().toString());//the expiry date/time for the signature
+        assertThat(tokenData.get("se")).startsWith(currentDate);//the expiry date/time for the signature
         assertThat(tokenData.get("sv")).contains("2020-04-08");//azure api version is latest
         assertThat(tokenData.get("sp")).contains("rwdl");//access permissions(write-w,list-l)
         assertThat(tokenData.get("sr")).isNotNull();
