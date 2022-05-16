@@ -199,7 +199,7 @@ dependencyManagement {
       entry 'logback-core'
     }
     // CVE-2020-36518
-    dependencySet(group: 'com.fasterxml.jackson.core', version: '2.13.2.2') {
+    dependencySet(group: 'com.fasterxml.jackson.core', version: '2.13.3') {
       entry 'jackson-databind'
     }
   }
