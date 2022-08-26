@@ -9,10 +9,10 @@ metadata:
   tags:
     - java
   links:
-    - url: https://hmcts-reform.slack.com/app_redirect?channel=platops-help
-      title: "#platops-help on Slack"
+    - url: https://hmcts-reform.slack.com/app_redirect?channel=rbs
+      title: "#rbs on Slack"
       icon: chat
 spec:
   type: service
   lifecycle: production
-  owner: dts_platform_operations
+  owner: dcd_group_bulkscan_v2
