@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: "rpe-send-letter-service-container-zip"
+  name: "send-letter-service-container-zip"
   annotations:
     # This must match folder-name/job-name in Jenkins.
     jenkins.io/job-full-name: cft:HMCTS_j_to_z/send-letter-service-container-zip
