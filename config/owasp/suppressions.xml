@@ -5,12 +5,6 @@
         <packageUrl regex="true">^pkg:maven/org\.bouncycastle/bcprov\-jdk15on@.*$</packageUrl>
         <cve>CVE-2020-15522</cve>
     </suppress>
-    <suppress until="2022-07-21">
-        <cve>CVE-2016-1000027</cve>
-    </suppress>
-    <suppress until="2022-07-25">
-        <cve>CVE-2022-22968</cve>
-    </suppress>
     <suppress until="2022-12-06">
         <cve>CVE-2022-22976</cve>
         <cve>CVE-2022-22978</cve>
