@@ -198,7 +198,7 @@ dependencyManagement {
       entry 'log4j-to-slf4j'
     }
     // CVE-2021-42550
-    dependencySet(group: 'ch.qos.logback', version: '1.4.3') {
+    dependencySet(group: 'ch.qos.logback', version: '1.4.4') {
       entry 'logback-classic'
       entry 'logback-core'
     }
