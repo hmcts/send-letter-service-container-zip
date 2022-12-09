@@ -5,12 +5,9 @@
         <packageUrl regex="true">^pkg:maven/org\.bouncycastle/bcprov\-jdk15on@.*$</packageUrl>
         <cve>CVE-2020-15522</cve>
     </suppress>
-    <suppress until="2022-12-06">
+    <suppress until="2022-03-06">
         <cve>CVE-2022-22976</cve>
         <cve>CVE-2022-22978</cve>
-    </suppress>
-    <suppress until="2022-10-18">
-        <cve>CVE-2022-31569</cve>
     </suppress>
     <suppress until="2023-01-12">
         <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
